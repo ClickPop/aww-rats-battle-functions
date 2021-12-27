@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+     "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "declaration": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["es2018", "DOM"],
+    "module": "commonjs",
+    "noEmitOnError": true,
+    "pretty": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "es2018",
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "rootDir": ".",
+    "outDir": "build",
+    "resolveJsonModule": true,
+  },
+  "include": ["./src/**/*.ts", "./test/**/*.ts"],
+  "exclude": [
+    "node_modules"
+  ]
+}

@@ -1,0 +1,5 @@
+node_modules/
+.env
+src/schema/generated.ts
+src/schema/graphql.schema.json
+build/

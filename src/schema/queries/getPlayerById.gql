@@ -1,0 +1,11 @@
+query getPlayerById($id: String!) {
+  players_by_pk(id: $id) {
+    id
+    level
+    max_energy
+    energy
+    created_at
+    updated_at
+    xp
+  }
+}
