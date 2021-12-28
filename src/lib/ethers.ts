@@ -1,5 +1,5 @@
-import {ethers} from 'ethers';
-import {POLYGON_URL, RAT_CONTRACT_ADDRESS} from '../config/env';
+import { ethers } from 'ethers';
+import { POLYGON_URL, RAT_CONTRACT_ADDRESS } from '../config/env';
 
 const abi = [
   'function ownerOf(uint tokenId) view returns (address)',

@@ -1,11 +1,3 @@
-import { sub } from 'date-fns';
-import express from 'express';
-import { authMiddleware } from '../middleware/auth';
-import { checkRatOwners } from '../utils/checkRatOwners';
-import { getRatMeta } from '../utils/getRatMeta';
-import crypto from 'crypto';
-const app = express();
-
 // app.post('/attempt', authMiddleware, checkPlayer, async (req, res) => {
 //   try {
 //     const player = res.locals.player as Player;
@@ -155,5 +147,3 @@ const app = express();
 //     return res.status(500).json({ error: 'An error occured lol' });
 //   }
 // });
-
-export const encounters = app;

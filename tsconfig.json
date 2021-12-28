@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-     "allowUnreachableCode": false,
+    "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "declaration": true,
     "forceConsistentCasingInFileNames": true,
@@ -14,11 +14,9 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "rootDir": ".",
-    "outDir": "build",
-    "resolveJsonModule": true,
+    "outDir": "functions",
+    "resolveJsonModule": true
   },
   "include": ["./src/**/*.ts", "./test/**/*.ts"],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

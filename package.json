@@ -2,16 +2,13 @@
   "name": "rat-battle-auth",
   "version": "1.0.0",
   "description": "",
+  "main": "index.js",
   "scripts": {
-    "lint": "",
-    "compile": "tsc",
-    "format": "prettier -w \"./src/**/*.(js|jsx|ts|tsx|json)\"",
-    "start": "nodemon --watch 'src/**' --ext 'ts,json' --ignore 'src/**/*.spec.ts' --exec 'ts-node src/index.ts'",
-    "watch": "concurrently \"tsc -w\" \"nodemon --watch ./build/ --exec npm run start\"",
-    "prepare": "npm run compile",
-    "pretest": "npm run compile",
-    "posttest": "npm run lint",
-    "gcp-build": "npm run compile"
+    "compile": "tsc && cp package.json functions/src/package.json",
+    "format": "prettier -w \"./src/**/*.(js|ts|json|gql)\"",
+    "dev": "nodemon --watch 'src/**' --ext 'ts,json' --ignore 'src/**/*.spec.ts' --exec 'ts-node src/dev.ts'",
+    "deploy": "pnpm run compile && pnpm run gcloud --prefix functions/src",
+    "gcloud": "gcloud functions deploy battle-actions --project=awwrats --entry-point=app --trigger-http --runtime=nodejs14 --allow-unauthenticated --region=us-east4"
   },
   "keywords": [],
   "author": "",

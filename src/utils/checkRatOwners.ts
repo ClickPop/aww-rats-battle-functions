@@ -1,8 +1,8 @@
-import {rat} from '../lib/ethers';
+import { rat } from '../lib/ethers';
 
 export const checkRatOwners = async (
   ratIds: string[],
-  address: string
+  address: string,
 ): Promise<boolean> => {
   for (const id of ratIds) {
     try {
