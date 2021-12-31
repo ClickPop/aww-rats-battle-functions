@@ -4,13 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "compile": "tsc && cp package.json functions/src/package.json",
+    "compile": "pnpm codegen && tsc && cp package.json functions/src/package.json",
+    "codegen": "graphql-codegen",
     "format": "prettier -w \"./src/**/*.(js|ts|json|gql)\"",
     "dev": "nodemon --watch 'src/**' --ext 'ts,json' --ignore 'src/**/*.spec.ts' --exec 'ts-node src/dev.ts'",
     "deploy": "pnpm run compile && pnpm run gcloud --prefix functions/src",
-    "deploy:dev": "pnpm run compile && pnpm run gcloud --prefix functions/src",
+    "deploy:dev": "pnpm run compile && pnpm run gcloud:dev --prefix functions/src",
     "gcloud": "gcloud functions deploy battle-actions --project=awwrats --entry-point=app --trigger-http --runtime=nodejs14 --allow-unauthenticated --region=us-east4",
-    "gcloud:dev": "gcloud functions deploy battle-actions-dev --project=awwrats --entry-point=app --trigger-http --runtime=nodejs14 --allow-unauthenticated --region=us-east4"
+    "gcloud:dev": "gcloud functions deploy battle-actions-dev --project=awwrats --entry-point=app --trigger-http --runtime=nodejs14 --allow-unauthenticated --region=us-east4",
+    "test-actions": "act --secret-file .secrets.env"
   },
   "keywords": [],
   "author": "",
