@@ -4,3 +4,4 @@ src/schema/generated.ts
 src/schema/graphql.schema.json
 functions/
 !src/functions
+!.sample.env
