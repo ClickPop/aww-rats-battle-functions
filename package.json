@@ -8,7 +8,9 @@
     "format": "prettier -w \"./src/**/*.(js|ts|json|gql)\"",
     "dev": "nodemon --watch 'src/**' --ext 'ts,json' --ignore 'src/**/*.spec.ts' --exec 'ts-node src/dev.ts'",
     "deploy": "pnpm run compile && pnpm run gcloud --prefix functions/src",
-    "gcloud": "gcloud functions deploy battle-actions --project=awwrats --entry-point=app --trigger-http --runtime=nodejs14 --allow-unauthenticated --region=us-east4"
+    "deploy:dev": "pnpm run compile && pnpm run gcloud --prefix functions/src",
+    "gcloud": "gcloud functions deploy battle-actions --project=awwrats --entry-point=app --trigger-http --runtime=nodejs14 --allow-unauthenticated --region=us-east4",
+    "gcloud:dev": "gcloud functions deploy battle-actions-dev --project=awwrats --entry-point=app --trigger-http --runtime=nodejs14 --allow-unauthenticated --region=us-east4"
   },
   "keywords": [],
   "author": "",
