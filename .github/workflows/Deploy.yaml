@@ -1,0 +1,28 @@
+name: 'Deploy function'
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'development'
+
+jobs:
+  Deploy:
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          go-version: 1.17
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_CREDENTIALS }}
+      - run: npm i
+      - name: deploy dev
+        if: ${{contains(github.ref, 'development')}}
+        run: npm run deploy:dev
+      - name: deploy prod
+        if: ${{contains(github.ref, 'main')}}
+        run: npm run deploy
