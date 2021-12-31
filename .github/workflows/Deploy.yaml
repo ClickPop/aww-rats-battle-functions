@@ -10,19 +10,31 @@ jobs:
   Deploy:
     runs-on: 'ubuntu-latest'
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Setup Node runtime
+        uses: actions/setup-node@v2
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v2.0.1
         with:
-          go-version: 1.17
+          version: 6.24.2
+      - name: Setup Cloud SDK Auth
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
       - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@master
-        with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
-          service_account_key: ${{ secrets.GCP_CREDENTIALS }}
-      - run: npm i
-      - name: deploy dev
+        uses: google-github-actions/setup-gcloud@v0
+      - name: Install deps
+        run: pnpm i
+      - name: Deploy dev
         if: ${{contains(github.ref, 'development')}}
-        run: npm run deploy:dev
-      - name: deploy prod
+        run: pnpm run deploy:dev
+        env:
+          HASURA_BASE_URL: ${{ secrets.HASURA_BASE_URL_DEV }}
+          HASURA_ADMIN_SECRET: ${{ secrets.HASURA_ADMIN_SECRET_DEV }}
+      - name: Deploy prod
         if: ${{contains(github.ref, 'main')}}
-        run: npm run deploy
+        run: pnpm run deploy
+        env:
+          HASURA_BASE_URL: ${{ secrets.HASURA_BASE_URL }}
+          HASURA_ADMIN_SECRET: ${{ secrets.HASURA_ADMIN_SECRET }}
