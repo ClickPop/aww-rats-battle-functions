@@ -1,8 +1,18 @@
 import { decodeSignedMessage } from '../../utils/decodeSignedMessage';
 import { authMiddleware } from '../../middleware/auth';
 import { app } from '../../lib/express';
+import { HasuraAuthHook, HasuraLoginHandler } from 'src/types';
 
-app.post('/auth/login', async (req, res) => {
+const authHook: HasuraAuthHook = async (_, res) => {
+  const wallet = res.locals.auth;
+  const result = {
+    'X-Hasura-User-Id': wallet,
+    'X-Hasura-Role': wallet ? 'user' : 'anonymous',
+  };
+  return res.json(result);
+};
+
+const login: HasuraLoginHandler = async (req, res) => {
   const { wallet, msg } = req.body.input;
   const signer = decodeSignedMessage(msg);
   if (signer && signer === wallet.toLowerCase()) {
@@ -14,13 +24,8 @@ app.post('/auth/login', async (req, res) => {
     return res.send({ authorized: true });
   }
   return res.status(401).send({ authorized: false });
-});
+};
 
-app.get('/auth', authMiddleware, async (_, res) => {
-  const wallet = res.locals.auth;
-  const result = {
-    'X-Hasura-User-Id': wallet,
-    'X-Hasura-Role': wallet ? 'user' : 'anonymous',
-  };
-  return res.json(result);
-});
+app.post('/auth/login', login);
+
+app.get('/auth', authMiddleware, authHook);
