@@ -61,15 +61,18 @@ export type HasuraActionHandler<
   ResponseLocals
 >;
 
+//Auth Hook Response handler
+export type HasuraAuthHookReponseBody = {
+  'X-Hasura-User-Id'?: string;
+  'X-Hasura-Role': HasuraRoles;
+} | { error: any } 
+
+
 // Auth hook handler
 export type HasuraAuthHook = RequestHandler<
   ParamsDictionary,
+  HasuraAuthHookReponseBody,
   {},
-  | {
-      'X-Hasura-User-Id'?: string;
-      'X-Hasura-Role': HasuraRoles;
-    }
-  | { error: any },
   qs.ParsedQs,
   { auth: string }
 >;

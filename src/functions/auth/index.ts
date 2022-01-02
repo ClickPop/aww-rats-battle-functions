@@ -1,11 +1,11 @@
 import { decodeSignedMessage } from '../../utils/decodeSignedMessage';
 import { authMiddleware } from '../../middleware/auth';
 import { app } from '../../lib/express';
-import { HasuraAuthHook, HasuraLoginHandler } from 'src/types';
+import { HasuraAuthHook, HasuraAuthHookReponseBody, HasuraLoginHandler } from 'src/types';
 
 const authHook: HasuraAuthHook = async (_, res) => {
   const wallet = res.locals.auth;
-  const result = {
+  const result: HasuraAuthHookReponseBody = {
     'X-Hasura-User-Id': wallet,
     'X-Hasura-Role': wallet ? 'user' : 'anonymous',
   };
