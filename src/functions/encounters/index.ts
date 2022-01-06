@@ -1,3 +1,20 @@
+import { SoloEncounterAttempt } from "../../types";
+import { app } from "../../lib/express";
+import { getPlayer } from "../../middleware/getPlayer";
+import { sdk } from "../../lib/graphql"
+
+const attempt : SoloEncounterAttempt = async (req,res) => {
+    const {encounter_id, rat_id} = req.body.input
+    const {player} = res.locals
+    const {getEncounterById} = sdk
+    getEncounterById({id : encounter_id})
+}
+
+
+
+
+
+
 // app.post('/attempt', authMiddleware, checkPlayer, async (req, res) => {
 //   try {
 //     const player = res.locals.player as Player;
