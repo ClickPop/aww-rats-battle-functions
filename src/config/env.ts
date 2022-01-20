@@ -9,3 +9,4 @@ export const PLAYER_BASE_ENERGY = 20;
 export const PORT = process.env.PORT ?? 5002;
 export const HASURA_BASE_URL =
   process.env.HASURA_BASE_URL ?? 'http://localhost:8080';
+export const HASURA_ADMIN_SECRET = process.env.HASURA_ADMIN_SECRET ?? '';
