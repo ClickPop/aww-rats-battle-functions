@@ -1,0 +1,31 @@
+mutation combinedCache(
+  $rats: [rats_insert_input!]!
+  $tokens: [closet_tokens_insert_input!]!
+  $pieces: [closet_pieces_insert_input!]!
+) {
+  insert_rats(objects: $rats, on_conflict: { constraint: rats_pkey }) {
+    returning {
+      id
+    }
+  }
+
+  insert_closet_pieces(
+    objects: $pieces
+    on_conflict: { constraint: closet_pieces_pkey }
+  ) {
+    returning {
+      id
+    }
+  }
+
+  insert_closet_tokens(
+    objects: $tokens
+    on_conflict: { constraint: closet_tokens_pkey }
+  ) {
+    returning {
+      token_id
+      owner
+      amount
+    }
+  }
+}
