@@ -25,15 +25,15 @@ const cacheEndpoint: HasuraActionHandler<
   const { rats, closet_pieces, closet_tokens } = req.body;
   try {
     const cache = await combinedCache({
-      rats,
-      pieces: closet_pieces,
+      rats: [],
+      pieces: [],
       tokens: closet_tokens,
     });
     return res.json({
       cache,
     });
   } catch (err) {
-    // console.error(err);
+    console.error(err);
     return res.status(500).json({ error: err });
   }
 };

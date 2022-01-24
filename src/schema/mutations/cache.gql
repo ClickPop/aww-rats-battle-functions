@@ -3,7 +3,36 @@ mutation combinedCache(
   $tokens: [closet_tokens_insert_input!]!
   $pieces: [closet_pieces_insert_input!]!
 ) {
-  insert_rats(objects: $rats, on_conflict: { constraint: rats_pkey }) {
+  insert_rats(
+    objects: $rats
+    on_conflict: {
+      constraint: rats_pkey
+      update_columns: [
+        accessory
+        background
+        color
+        cunning
+        cuteness
+        description
+        ears
+        eyes
+        generation
+        glasses
+        hand
+        hat
+        head
+        image
+        name
+        owner
+        pet
+        rattitude
+        shirt
+        snout
+        tail
+        torso
+      ]
+    }
+  ) {
     returning {
       id
     }
@@ -11,7 +40,27 @@ mutation combinedCache(
 
   insert_closet_pieces(
     objects: $pieces
-    on_conflict: { constraint: closet_pieces_pkey }
+    on_conflict: {
+      constraint: closet_pieces_pkey
+      update_columns: [
+        active
+        collection
+        cost
+        cunning
+        cuteness
+        description
+        image
+        max_per_wallet
+        max_tokens
+        name
+        piece_type
+        rattitude
+        rev_share_address
+        rev_share_amount
+        sponsor
+        sponsor_url
+      ]
+    }
   ) {
     returning {
       id
@@ -20,7 +69,7 @@ mutation combinedCache(
 
   insert_closet_tokens(
     objects: $tokens
-    on_conflict: { constraint: closet_tokens_pkey }
+    on_conflict: { constraint: closet_tokens_pkey, update_columns: amount }
   ) {
     returning {
       token_id
