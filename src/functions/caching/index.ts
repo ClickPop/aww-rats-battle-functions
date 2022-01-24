@@ -25,8 +25,8 @@ const cacheEndpoint: HasuraActionHandler<
   const { rats, closet_pieces, closet_tokens } = req.body;
   try {
     const cache = await combinedCache({
-      rats: [],
-      pieces: [],
+      rats,
+      pieces: closet_pieces,
       tokens: closet_tokens,
     });
     return res.json({
