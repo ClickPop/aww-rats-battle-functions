@@ -6,10 +6,11 @@ import {
   Closet_Pieces_Insert_Input,
   Closet_Tokens_Insert_Input,
   CombinedCacheMutation,
+  ClearZeroTokensMutation,
 } from '../../types';
 import { checkApiKey } from '../../middleware/checkApiKey';
 
-const { combinedCache } = sdk;
+const { combinedCache, clearZeroTokens } = sdk;
 
 const cacheEndpoint: HasuraActionHandler<
   | {
@@ -38,4 +39,17 @@ const cacheEndpoint: HasuraActionHandler<
   }
 };
 
+const clearZeroTokensEndpoint: HasuraActionHandler<
+  ClearZeroTokensMutation['delete_closet_tokens'] | { error: unknown }
+> = async (_, res) => {
+  try {
+    const result = await clearZeroTokens();
+    return res.json(result.delete_closet_tokens);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: err });
+  }
+};
+
 app.post('/caching', checkApiKey, cacheEndpoint);
+app.post('/caching/clear', checkApiKey, clearZeroTokensEndpoint);
