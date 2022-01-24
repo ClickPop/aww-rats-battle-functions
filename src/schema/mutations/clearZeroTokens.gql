@@ -1,0 +1,5 @@
+mutation clearZeroTokens {
+  delete_closet_tokens(where: { amount: { _lt: 1 } }) {
+    affected_rows
+  }
+}
