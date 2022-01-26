@@ -8,7 +8,7 @@ export const checkRatOwners = async (
     try {
       const owner = await rat.ownerOf(id);
       if (owner !== address) {
-        return false;
+        return true;
       }
     } catch (err) {
       console.error(err);
