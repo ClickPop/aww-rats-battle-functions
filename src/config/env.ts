@@ -10,7 +10,4 @@ export const PORT = process.env.PORT ?? 5002;
 export const HASURA_BASE_URL =
   process.env.HASURA_BASE_URL ?? 'http://localhost:8080';
 export const HASURA_ADMIN_SECRET = process.env.HASURA_ADMIN_SECRET ?? '';
-<<<<<<< HEAD
 export const HASURA_API_KEY = process.env.HASURA_API_KEY ?? '';
-=======
->>>>>>> 79b7ca9 (converted more logic to solo-encounters)
