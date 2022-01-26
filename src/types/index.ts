@@ -1,5 +1,6 @@
 import { RequestHandler } from 'express';
 import { ParamsDictionary } from 'express-serve-static-core';
+import { GetPlayerByIdQuery } from '../schema/generated';
 export * from '../schema/generated';
 
 /**
@@ -62,11 +63,12 @@ export type HasuraActionHandler<
 >;
 
 //Auth Hook Response handler
-export type HasuraAuthHookReponseBody = {
-  'X-Hasura-User-Id'?: string;
-  'X-Hasura-Role': HasuraRoles;
-} | { error: any } 
-
+export type HasuraAuthHookReponseBody =
+  | {
+      'X-Hasura-User-Id'?: string;
+      'X-Hasura-Role': HasuraRoles;
+    }
+  | { error: any };
 
 // Auth hook handler
 export type HasuraAuthHook = RequestHandler<
@@ -81,4 +83,12 @@ export type HasuraAuthHook = RequestHandler<
 export type HasuraLoginHandler = HasuraActionHandler<
   { authorized: boolean },
   { action: { name: 'login' }; input: { wallet: string; msg: string } }
+>;
+
+// Function Encounter types
+export type SoloEncounterAttempt = HasuraActionHandler<
+  { result: boolean } | { error: string },
+  { input: { encounter_id: number; rat_ids: string[] } },
+  qs.ParsedQs,
+  { player: GetPlayerByIdQuery['players_by_pk'] }
 >;

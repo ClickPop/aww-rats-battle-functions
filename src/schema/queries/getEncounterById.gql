@@ -1,0 +1,17 @@
+query getEncounterById($id: Int!) {
+  encounters_by_pk(id: $id) {
+    active
+    energy_cost
+    power
+    max_rats
+    encounter_weaknesses {
+      weakness
+    }
+    encounter_resistances {
+      resistance
+    }
+    reward {
+      tokens
+    }
+  }
+}
