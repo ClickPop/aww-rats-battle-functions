@@ -5,3 +5,4 @@ src/schema/graphql.schema.json
 functions/
 !src/functions
 !.sample.env
+coverage/
