@@ -1,0 +1,5 @@
+query getUserRole($wallet: String!) {
+  users_roles_by_pk(wallet: $wallet) {
+    role
+  }
+}

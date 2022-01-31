@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
 import { ParamsDictionary } from 'express-serve-static-core';
-import { GetPlayerByIdQuery } from '../schema/generated';
+import { GetPlayerByIdQuery, Roles_Enum } from '../schema/generated';
 export * from '../schema/generated';
 
 /**
@@ -31,10 +31,6 @@ export type OpenSeaAttribute = {
 /**
  * Hasura
  * */
-
-// A union type of possible hasura roles
-export type HasuraRoles = 'user' | 'anonymous';
-
 // This is the basic shape of the request body coming in from Hasura into an action handler
 export type HasuraActionReqBody = {
   action: {
@@ -66,7 +62,7 @@ export type HasuraActionHandler<
 export type HasuraAuthHookReponseBody =
   | {
       'X-Hasura-User-Id'?: string;
-      'X-Hasura-Role': HasuraRoles;
+      'X-Hasura-Role': Roles_Enum;
     }
   | { error: any };
 
