@@ -12,7 +12,7 @@ a.use(
 );
 a.use(cookieParser(COOKIE_SECRET));
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'prod') {
   a.use(morgan('dev'));
 }
 

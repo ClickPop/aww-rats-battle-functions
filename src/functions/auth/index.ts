@@ -33,6 +33,7 @@ const login: HasuraLoginHandler = async (req, res) => {
     res.cookie('wallet', signer, {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       secure: process.env.NODE_ENV === 'prod',
+      sameSite: process.env.NODE_ENV === 'prod' ? 'none' : undefined,
       signed: true,
     });
     return res.send({ authorized: true });
