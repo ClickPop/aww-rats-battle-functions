@@ -31,7 +31,7 @@ const login: HasuraLoginHandler = async (req, res) => {
     const { wallet, msg } = req.body.input;
     const signer = decodeSignedMessage(msg);
     if (signer && signer === wallet.toLowerCase()) {
-      res.cookie('wallet', signer, {
+      res.cookie('wallet', wallet, {
         maxAge: 1000 * 60 * 60 * 24 * 7,
         secure: process.env.NODE_ENV === 'prod',
         sameSite: process.env.NODE_ENV === 'prod' ? 'none' : undefined,
