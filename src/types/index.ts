@@ -1,6 +1,10 @@
 import { RequestHandler } from 'express';
 import { ParamsDictionary } from 'express-serve-static-core';
-import { GetPlayerByIdQuery, Roles_Enum } from '../schema/generated';
+import {
+  GetPlayerByIdQuery,
+  Roles_Enum,
+  UpsertPlayerMutation,
+} from '../schema/generated';
 export * from '../schema/generated';
 
 /**
@@ -77,7 +81,7 @@ export type HasuraAuthHook = RequestHandler<
 
 // Login action handler using the action handler generic
 export type HasuraLoginHandler = HasuraActionHandler<
-  { authorized: boolean },
+  UpsertPlayerMutation['insert_players_one'] | { error: unknown },
   { action: { name: 'login' }; input: { wallet: string; msg: string } }
 >;
 
