@@ -23,7 +23,7 @@ const attempt: SoloEncounterAttempt = async (req, res) => {
         .status(400)
         .json({ error: 'user does not own all submitted rats' });
     }
-    if (encounter.energy_cost >= player.energy) {
+    if (encounter.energy_cost > player.energy) {
       return res
         .status(400)
         .json({ error: 'user does not have enough energy' });
@@ -84,25 +84,27 @@ const attempt: SoloEncounterAttempt = async (req, res) => {
       (item) => item.resistance,
     );
 
-    const modifier =
-      weaknesses.reduce(
-        (acc, curr) =>
-          acc +
-          Object.entries(rattributes).reduce(
-            (a, c) => a + (c[curr.toLowerCase() as keyof typeof c] as number),
-            0,
-          ),
-        0,
-      ) -
-      resistances.reduce(
-        (acc, curr) =>
-          acc +
-          Object.entries(rattributes).reduce(
-            (a, c) => a + (c[curr.toLowerCase() as keyof typeof c] as number),
-            0,
-          ),
-        0,
-      );
+    const weakness = weaknesses.reduce(
+      (acc, curr) =>
+        acc +
+        Object.values(rattributes).reduce(
+          (a, c) => a + (c[curr.toLowerCase() as keyof typeof c] as number),
+          0,
+        ),
+      0,
+    );
+
+    const resistance = resistances.reduce(
+      (acc, curr) =>
+        acc +
+        Object.values(rattributes).reduce(
+          (a, c) => a + (c[curr.toLowerCase() as keyof typeof c] as number),
+          0,
+        ),
+      0,
+    );
+
+    const modifier = weakness - resistance;
 
     const min = rat_ids.length + modifier;
     const max = rat_ids.length * 6 + modifier;
