@@ -112,14 +112,34 @@ const attempt: SoloEncounterAttempt = async (req, res) => {
     const result = rand >= encounter.power;
     const newEnergy = player.energy - encounter.energy_cost;
 
+    const xp = result
+      ? encounter.power +
+        encounter.energy_cost +
+        encounter.encounter_resistances.length -
+        encounter.encounter_weaknesses.length
+      : player.xp;
+
     const attempt = await addSoloEncounterAttempt({
       encounter_id,
       player_id: player.id,
       result,
       newEnergy,
+      newXP: xp,
     });
 
-    return res.json({ result });
+    if (
+      attempt.insert_solo_encounter_results_one &&
+      attempt.update_players_by_pk
+    ) {
+      return res.json({
+        encounter_id,
+        result: attempt.insert_solo_encounter_results_one.result,
+        result_id: attempt.insert_solo_encounter_results_one.id,
+        player_id: attempt.update_players_by_pk.id,
+        energy: attempt.update_players_by_pk.energy,
+        xp: attempt.update_players_by_pk.xp,
+      });
+    }
   } else return res.status(401).json({ error: 'Player does not exist' });
 };
 

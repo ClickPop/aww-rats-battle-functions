@@ -3,6 +3,7 @@ import { ParamsDictionary } from 'express-serve-static-core';
 import {
   GetPlayerByIdQuery,
   Roles_Enum,
+  SoloEncounterAttemptResult,
   UpsertPlayerMutation,
 } from '../schema/generated';
 export * from '../schema/generated';
@@ -87,7 +88,7 @@ export type HasuraLoginHandler = HasuraActionHandler<
 
 // Function Encounter types
 export type SoloEncounterAttempt = HasuraActionHandler<
-  { result: boolean } | { error: string },
+  Omit<SoloEncounterAttemptResult, '__typename'> | { error: string },
   { input: { encounter_id: number; rat_ids: string[] } },
   qs.ParsedQs,
   { player: GetPlayerByIdQuery['players_by_pk'] }
