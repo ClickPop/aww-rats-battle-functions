@@ -37,6 +37,7 @@ const login: HasuraLoginHandler = async (req, res) => {
         sameSite: process.env.NODE_ENV === 'prod' ? 'none' : undefined,
         signed: true,
       });
+      console.log(res.getHeaders());
       const player = await UpsertPlayer({ id: wallet });
       return res.send(player.insert_players_one);
     }
