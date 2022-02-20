@@ -13,5 +13,10 @@ query getEncounterById($id: Int!) {
     reward {
       tokens
     }
+    encounter_rat_constraints {
+      rat_type
+      locked_slots
+      external_contract_address
+    }
   }
 }
