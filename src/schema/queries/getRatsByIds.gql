@@ -1,0 +1,9 @@
+query GetRatsByIds($ids: [bigint!]!) {
+  rats(where: { id: { _in: $ids } }) {
+    id
+    cunning
+    cuteness
+    rattitude
+    type
+  }
+}
