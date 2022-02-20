@@ -3,8 +3,9 @@ import { app } from '../../lib/express';
 import { getPlayer } from '../../middleware/getPlayer';
 import { sdk } from '../../lib/graphql';
 import { checkRatOwners } from '../../utils/checkRatOwners';
-import { getRatMeta } from '../../utils/getRatMeta';
 import crypto from 'crypto';
+
+const { GetRatsByIds } = sdk;
 
 const attempt: SoloEncounterAttempt = async (req, res) => {
   const { encounter_id, rat_ids } = req.body.input;
@@ -35,35 +36,29 @@ const attempt: SoloEncounterAttempt = async (req, res) => {
       return res.status(400).json({ error: 'encounter is not active' });
     }
 
-    const ratMeta = await getRatMeta(rat_ids);
+    const { rats } = await GetRatsByIds({ ids: rat_ids });
 
-    if (Object.keys(ratMeta).length < 1) {
+    if (rats.length < 1) {
       return res.status(500).json({ error: 'could not get rat metadata' });
     }
 
-    const rattributes = Object.entries(ratMeta).reduce(
-      (acc, [id, rat]) => ({
+    for (const constraint of encounter.encounter_rat_constraints) {
+      const { rat_type, locked_slots } = constraint;
+      const ratsOfType = rats.filter((r) => r.type === rat_type).length;
+      if (ratsOfType < locked_slots) {
+        return res
+          .status(400)
+          .json({
+            error: `Incorrect number of ${rat_type} rats sent. Expected: ${locked_slots} Recieved: ${ratsOfType}`,
+          });
+      }
+    }
+
+    const rattributes = rats.reduce(
+      (acc, rat) => ({
         ...acc,
-        [id]: {
-          ...rat.attributes
-            .filter((a) =>
-              ['cuteness', 'cunning', 'rattitude'].includes(
-                a.trait_type?.toLowerCase() ?? '',
-              ),
-            )
-            .reduce(
-              (acc, curr) => ({
-                ...acc,
-                [curr.trait_type?.toLowerCase() ?? '']: curr.value,
-              }),
-              {} as { cunning: number; cuteness: number; rattitude: number },
-            ),
-          ratType:
-            rat.attributes
-              .find((a) => a.trait_type?.toLowerCase() === 'type')
-              ?.value.toString()
-              .toUpperCase()
-              .split(' ')[0] ?? '',
+        [rat.id]: {
+          ...rat,
         },
       }),
       {} as Record<
