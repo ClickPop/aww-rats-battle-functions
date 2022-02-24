@@ -18,8 +18,8 @@ mutation addSoloEncounterAttempt(
   }
   update_players_by_pk(
     pk_columns: { id: $player_id }
-    _set: { energy: $newEnergy, xp: $newXP }
-    _inc: { tokens: $reward }
+    _set: { energy: $newEnergy }
+    _inc: { tokens: $reward, xp: $newXP }
   ) {
     id
     energy
