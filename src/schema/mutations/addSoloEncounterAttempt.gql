@@ -4,6 +4,7 @@ mutation addSoloEncounterAttempt(
   $result: Boolean!
   $newEnergy: Int!
   $newXP: Int!
+  $reward: Int!
 ) {
   insert_solo_encounter_results_one(
     object: {
@@ -18,6 +19,7 @@ mutation addSoloEncounterAttempt(
   update_players_by_pk(
     pk_columns: { id: $player_id }
     _set: { energy: $newEnergy, xp: $newXP }
+    _inc: { tokens: $reward }
   ) {
     id
     energy

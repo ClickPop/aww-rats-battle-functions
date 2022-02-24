@@ -45,12 +45,13 @@ const attempt: SoloEncounterAttempt = async (req, res) => {
     for (const constraint of encounter.encounter_rat_constraints) {
       const { rat_type, locked_slots } = constraint;
       const ratsOfType = rats.filter((r) => r.type === rat_type).length;
-      if (ratsOfType < locked_slots) {
-        return res
-          .status(400)
-          .json({
-            error: `Incorrect number of ${rat_type} rats sent. Expected: ${locked_slots} Recieved: ${ratsOfType}`,
-          });
+      if (
+        rats.length > encounter.max_rats - locked_slots &&
+        ratsOfType < locked_slots
+      ) {
+        return res.status(400).json({
+          error: `Incorrect number of ${rat_type} rats sent. Expected: ${locked_slots} Recieved: ${ratsOfType}`,
+        });
       }
     }
 
@@ -112,7 +113,7 @@ const attempt: SoloEncounterAttempt = async (req, res) => {
         encounter.energy_cost +
         encounter.encounter_resistances.length -
         encounter.encounter_weaknesses.length
-      : player.xp;
+      : 0;
 
     const attempt = await addSoloEncounterAttempt({
       encounter_id,
@@ -120,6 +121,7 @@ const attempt: SoloEncounterAttempt = async (req, res) => {
       result,
       newEnergy,
       newXP: xp,
+      reward: result ? encounter.reward.tokens : 0,
     });
 
     if (
