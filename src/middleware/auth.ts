@@ -7,7 +7,7 @@ export const authMiddleware: RequestHandler = async (req, res, next) => {
       res.cookie('wallet', cookie, {
         maxAge: 1000 * 60 * 60 * 24 * 7,
         secure: process.env.NODE_ENV === 'prod',
-        sameSite: process.env.NODE_ENV === 'prod' ? 'none' : undefined,
+        httpOnly: true,
         signed: true,
       });
     }
