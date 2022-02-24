@@ -2,6 +2,7 @@ import { decodeSignedMessage } from '../../utils/decodeSignedMessage';
 import { authMiddleware } from '../../middleware/auth';
 import { app } from '../../lib/express';
 import {
+  HasuraActionHandler,
   HasuraAuthHook,
   HasuraAuthHookReponseBody,
   HasuraLoginHandler,
@@ -12,16 +13,34 @@ import { sdk } from '../../lib/graphql';
 const { getUserRole, UpsertPlayer } = sdk;
 
 const authHook: HasuraAuthHook = async (_, res) => {
-  const wallet = res.locals.auth;
-  let role: Roles_Enum = Roles_Enum.Anonymous;
-  if (wallet) {
-    const resp = await getUserRole({ wallet });
-    const userRole = resp.users_roles_by_pk?.role;
-    role = userRole ? userRole : Roles_Enum.User;
+  try {
+    const wallet = res.locals.auth;
+    let role: Roles_Enum = Roles_Enum.Anonymous;
+    if (wallet) {
+      const resp = await getUserRole({ wallet });
+      const userRole = resp.users_roles_by_pk?.role;
+      role = userRole ? userRole : Roles_Enum.User;
+    }
+    const result: HasuraAuthHookReponseBody = {
+      'X-Hasura-User-Id': wallet,
+      'X-Hasura-Role': role,
+    };
+    return res.json(result);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: err });
   }
-  const result: HasuraAuthHookReponseBody = {
-    'X-Hasura-User-Id': wallet,
-    'X-Hasura-Role': role,
+};
+
+const authCheck: HasuraActionHandler<{
+  id: string | null;
+  role: 'user' | 'admin' | 'anonymous';
+}> = async (req, res) => {
+  const wallet = req.body.session_variables['x-hasura-user-id'];
+  const role = req.body.session_variables['x-hasura-role'];
+  const result = {
+    id: wallet ?? null,
+    role: role,
   };
   return res.json(result);
 };
@@ -34,10 +53,9 @@ const login: HasuraLoginHandler = async (req, res) => {
       res.cookie('wallet', wallet, {
         maxAge: 1000 * 60 * 60 * 24 * 7,
         secure: process.env.NODE_ENV === 'prod',
-        sameSite: process.env.NODE_ENV === 'prod' ? 'none' : undefined,
+        httpOnly: true,
         signed: true,
       });
-      console.log(res.getHeaders());
       const player = await UpsertPlayer({ id: wallet });
       return res.send(player.insert_players_one);
     }
@@ -48,5 +66,5 @@ const login: HasuraLoginHandler = async (req, res) => {
 };
 
 app.post('/auth/login', login);
-
 app.get('/auth', authMiddleware, authHook);
+app.post('/auth-check', authCheck);
