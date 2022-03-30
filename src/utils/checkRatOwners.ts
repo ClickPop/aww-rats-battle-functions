@@ -1,4 +1,4 @@
-import { rat } from '../lib/ethers';
+import { rat } from 'src/lib/ethers';
 
 export const checkRatOwners = async (
   ratIds: string[],
