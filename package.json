@@ -2,13 +2,14 @@
   "name": "rat-battle-auth",
   "version": "1.0.0",
   "description": "",
+  "main": "index.js",
   "scripts": {
     "compile": "pnpm codegen && tsc && babel src --out-dir functions --extensions '.ts' && cp package.json functions/package.json",
     "codegen": "graphql-codegen",
     "format": "prettier -w \"./src/**/*.(js|ts|json|gql)\"",
     "dev": "nodemon --exec 'babel-node src/dev.ts --extensions .ts'",
-    "deploy": "pnpm run compile && pnpm run gcloud --prefix functions",
-    "deploy:dev": "pnpm run compile && pnpm run gcloud:dev --prefix functions",
+    "deploy": "pnpm run compile && pnpm run gcloud --prefix functions/",
+    "deploy:dev": "pnpm run compile && pnpm run gcloud:dev --prefix functions/",
     "gcloud": "gcloud functions deploy battle-actions --project=awwrats --entry-point=app --trigger-http --runtime=nodejs14 --allow-unauthenticated --region=us-east4",
     "gcloud:dev": "gcloud functions deploy battle-actions-dev --project=awwrats --entry-point=app --trigger-http --runtime=nodejs14 --allow-unauthenticated --region=us-east4",
     "test-actions": "act --secret-file .secrets.env"
@@ -44,6 +45,7 @@
     "@graphql-codegen/typescript-operations": "^2.2.1",
     "axios": "^0.24.0",
     "cookie-parser": "^1.4.6",
+    "core-js": "^3.21.1",
     "date-fns": "^2.27.0",
     "dotenv": "^10.0.0",
     "ethereumjs-util": "^7.1.3",
@@ -53,6 +55,7 @@
     "graphql-request": "^3.7.0",
     "graphql-tag": "^2.12.6",
     "morgan": "^1.10.0",
+    "regenerator-runtime": "^0.13.9",
     "rlp": "^2.2.7",
     "tspath": "^1.3.7"
   }
