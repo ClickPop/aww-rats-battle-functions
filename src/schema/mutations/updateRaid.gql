@@ -1,0 +1,11 @@
+mutation UpdateRaid($raid_id: Int!, $input: raids_set_input!) {
+  update_raids_by_pk(pk_columns: { id: $raid_id }, _set: $input) {
+    id
+    active
+    start_timestamp
+    end_timestamp
+    end_event_id
+    result
+    winning_faction
+  }
+}

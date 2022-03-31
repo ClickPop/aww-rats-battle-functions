@@ -1,14 +1,14 @@
-import { decodeSignedMessage } from '../../utils/decodeSignedMessage';
-import { authMiddleware } from '../../middleware/auth';
-import { app } from '../../lib/express';
+import { decodeSignedMessage } from 'src/utils/decodeSignedMessage';
+import { authMiddleware } from 'src/middleware/auth';
+import { app } from 'src/lib/express';
 import {
   HasuraActionHandler,
   HasuraAuthHook,
   HasuraAuthHookReponseBody,
   HasuraLoginHandler,
   Roles_Enum,
-} from '../../types';
-import { sdk } from '../../lib/graphql';
+} from 'src/types';
+import { sdk } from 'src/lib/graphql';
 
 const { getUserRole, UpsertPlayer } = sdk;
 
