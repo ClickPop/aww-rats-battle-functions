@@ -1,0 +1,22 @@
+mutation handleRaidPayout(
+  $players: [String!]!
+  $payout: Int!
+  $closetItems: [closet_tokens_insert_input!]!
+) {
+  update_players(where: { id: { _in: $players } }, _inc: { tokens: $payout }) {
+    affected_rows
+    returning {
+      id
+      tokens
+    }
+  }
+
+  insert_closet_tokens(objects: $closetItems) {
+    affected_rows
+    returning {
+      token_id
+      owner
+      amount
+    }
+  }
+}

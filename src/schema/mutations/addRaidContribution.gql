@@ -1,0 +1,31 @@
+mutation addRaidContribution(
+  $raid_id: Int!
+  $player_id: String!
+  $contribution: Int!
+  $newEnergy: Int!
+  $newXP: Int!
+  $faction: rat_types_enum
+) {
+  insert_raid_contributions_one(
+    object: {
+      raid_id: $raid_id
+      player_id: $player_id
+      contribution: $contribution
+      faction: $faction
+    }
+  ) {
+    id
+    contribution
+    contribution_timestamp
+    faction
+  }
+  update_players_by_pk(
+    pk_columns: { id: $player_id }
+    _set: { energy: $newEnergy }
+    _inc: { xp: $newXP }
+  ) {
+    id
+    energy
+    xp
+  }
+}

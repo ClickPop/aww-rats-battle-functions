@@ -14,8 +14,11 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "rootDir": ".",
-    "outDir": "functions",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "paths": {
+      "src/*": ["src/*"]
+    }
   },
   "include": ["./src/**/*.ts", "./test/**/*.ts"],
   "exclude": ["node_modules"]

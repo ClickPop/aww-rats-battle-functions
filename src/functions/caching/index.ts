@@ -1,7 +1,7 @@
-import { sdk } from '../../lib/graphql';
-import { app } from '../../lib/express';
-import { HasuraActionHandler, ClearZeroTokensMutation } from '../../types';
-import { checkApiKey } from '../../middleware/checkApiKey';
+import { sdk } from 'src/lib/graphql';
+import { app } from 'src/lib/express';
+import { HasuraActionHandler, ClearZeroTokensMutation } from 'src/types';
+import { checkApiKey } from 'src/middleware/checkApiKey';
 
 const { clearZeroTokens } = sdk;
 

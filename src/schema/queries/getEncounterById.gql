@@ -1,5 +1,6 @@
 query getEncounterById($id: Int!) {
   encounters_by_pk(id: $id) {
+    id
     active
     energy_cost
     power

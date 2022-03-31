@@ -1,0 +1,74 @@
+query GetRaidContributions($raid_id: Int!) {
+  raids_by_pk(id: $raid_id) {
+    encounter {
+      power
+      encounter_type
+    }
+
+    reward {
+      tokens
+    }
+
+    total: raid_contributions {
+      player_id
+    }
+
+    pet: raid_contributions(where: { faction: { _eq: pet } }) {
+      player_id
+    }
+
+    pack: raid_contributions(where: { faction: { _eq: pack } }) {
+      player_id
+    }
+
+    lab: raid_contributions(where: { faction: { _eq: lab } }) {
+      player_id
+    }
+
+    street: raid_contributions(where: { faction: { _eq: street } }) {
+      player_id
+    }
+
+    total_sum: raid_contributions_aggregate {
+      aggregate {
+        sum {
+          contribution
+        }
+      }
+    }
+
+    pet_sum: raid_contributions_aggregate(where: { faction: { _eq: pet } }) {
+      aggregate {
+        sum {
+          contribution
+        }
+      }
+    }
+
+    pack_sum: raid_contributions_aggregate(where: { faction: { _eq: pack } }) {
+      aggregate {
+        sum {
+          contribution
+        }
+      }
+    }
+
+    lab_sum: raid_contributions_aggregate(where: { faction: { _eq: lab } }) {
+      aggregate {
+        sum {
+          contribution
+        }
+      }
+    }
+
+    street_sum: raid_contributions_aggregate(
+      where: { faction: { _eq: street } }
+    ) {
+      aggregate {
+        sum {
+          contribution
+        }
+      }
+    }
+  }
+}
