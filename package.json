@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "compile": "pnpm codegen && tsc && babel src --out-dir functions --extensions '.ts' && cp package.json functions/src/package.json",
+    "compile": "pnpm codegen && tsc && babel src --out-dir functions --extensions '.ts' && cp package.json functions/package.json",
     "codegen": "graphql-codegen",
     "format": "prettier -w \"./src/**/*.(js|ts|json|gql)\"",
     "dev": "nodemon --exec 'babel-node src/dev.ts --extensions .ts'",
-    "deploy": "pnpm run compile && pnpm run gcloud --prefix functions/src",
-    "deploy:dev": "pnpm run compile && pnpm run gcloud:dev --prefix functions/src",
+    "deploy": "pnpm run compile && pnpm run gcloud --prefix functions",
+    "deploy:dev": "pnpm run compile && pnpm run gcloud:dev --prefix functions",
     "gcloud": "gcloud functions deploy battle-actions --project=awwrats --entry-point=app --trigger-http --runtime=nodejs14 --allow-unauthenticated --region=us-east4",
     "gcloud:dev": "gcloud functions deploy battle-actions-dev --project=awwrats --entry-point=app --trigger-http --runtime=nodejs14 --allow-unauthenticated --region=us-east4",
     "test-actions": "act --secret-file .secrets.env"
