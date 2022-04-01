@@ -1,0 +1,5 @@
+mutation resetEnergy {
+  reset_energy {
+    energy
+  }
+}

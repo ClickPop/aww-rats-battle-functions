@@ -1,5 +1,6 @@
 query getEncounterById($id: Int!) {
   encounters_by_pk(id: $id) {
+    id
     active
     energy_cost
     power
@@ -12,6 +13,11 @@ query getEncounterById($id: Int!) {
     }
     reward {
       tokens
+    }
+    encounter_rat_constraints {
+      rat_type
+      locked_slots
+      external_contract_address
     }
   }
 }

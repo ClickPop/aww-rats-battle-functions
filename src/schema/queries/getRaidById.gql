@@ -1,0 +1,29 @@
+query getRaidbyId($id: Int!) {
+  raids_by_pk(id: $id) {
+    id
+    active
+    start_timestamp
+    end_timestamp
+    result
+    reward {
+      tokens
+    }
+    encounter {
+      id
+      energy_cost
+      power
+      max_rats
+      encounter_weaknesses {
+        weakness
+      }
+      encounter_resistances {
+        resistance
+      }
+      encounter_rat_constraints {
+        rat_type
+        locked_slots
+        external_contract_address
+      }
+    }
+  }
+}

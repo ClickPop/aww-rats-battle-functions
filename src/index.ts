@@ -1,4 +1,7 @@
-import './functions/auth';
-import './functions/caching';
-import './functions/encounters';
-export * from './lib/express';
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
+export * from 'src/lib/express';
+import 'src/functions/auth';
+import 'src/functions/caching';
+import 'src/functions/encounters';
+import 'src/functions/cron';

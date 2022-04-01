@@ -1,10 +1,28 @@
-mutation addSoloEncounterAttempt($encounter_id: Int!, $player_id: String!, $result: Boolean!, $newEnergy: Int!) {
-  insert_solo_encounter_results_one(object: {encounter_id: $encounter_id, player_id: $player_id, result: $result}) {
+mutation addSoloEncounterAttempt(
+  $encounter_id: Int!
+  $player_id: String!
+  $result: Boolean!
+  $newEnergy: Int!
+  $newXP: Int!
+  $reward: Int!
+) {
+  insert_solo_encounter_results_one(
+    object: {
+      encounter_id: $encounter_id
+      player_id: $player_id
+      result: $result
+    }
+  ) {
     id
     result
   }
-  update_players_by_pk(pk_columns: {id: $player_id}, _set: {energy: $newEnergy}){
+  update_players_by_pk(
+    pk_columns: { id: $player_id }
+    _set: { energy: $newEnergy }
+    _inc: { tokens: $reward, xp: $newXP }
+  ) {
     id
     energy
+    xp
   }
 }

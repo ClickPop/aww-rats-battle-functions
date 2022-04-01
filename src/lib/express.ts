@@ -1,8 +1,9 @@
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import morgan from 'morgan';
-import { checkApiKey } from '../middleware/checkApiKey';
-import { COOKIE_SECRET } from '../config/env';
+import { checkApiKey } from 'src/middleware/checkApiKey';
+import { COOKIE_SECRET } from 'src/config/env';
+import { errorHandler } from 'src/errors/errorHandler';
 
 const a = express();
 a.use(
@@ -12,7 +13,7 @@ a.use(
 );
 a.use(cookieParser(COOKIE_SECRET));
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'prod') {
   a.use(morgan('dev'));
 }
 

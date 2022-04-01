@@ -1,124 +1,78 @@
-import { SoloEncounterAttempt } from '../../types';
-import { app } from '../../lib/express';
-import { getPlayer } from '../../middleware/getPlayer';
-import { sdk } from '../../lib/graphql';
-import { checkRatOwners } from '../../utils/checkRatOwners';
-import { getRatMeta } from '../../utils/getRatMeta';
-import crypto from 'crypto';
+import { RaidContribution, SoloEncounterAttempt } from 'src/types';
+import { app } from 'src/lib/express';
+import { getPlayer } from 'src/middleware/getPlayer';
+import { sdk } from 'src/lib/graphql';
+import { getEncounter } from 'src/middleware/getEncounter';
+import { checkTokens } from 'src/middleware/checkTokens';
+import { loadTokens } from 'src/middleware/loadTokens';
+import { verifyEncounterMiddleware } from 'src/middleware/verifyEncounter';
+import { getRaid } from 'src/middleware/getRaid';
+import { verifyRaidMiddleware } from 'src/middleware/verifyRaid';
+import { calculateAttempt } from 'src/middleware/calculateAttempt';
+import { calculateContribution } from 'src/middleware/calculateContribution';
+const { addSoloEncounterAttempt, addRaidContribution } = sdk;
 
-const attempt: SoloEncounterAttempt = async (req, res) => {
-  const { encounter_id, rat_ids } = req.body.input;
-  const { player } = res.locals;
-  const { getEncounterById, addSoloEncounterAttempt } = sdk;
-  if (player) {
-    const { encounters_by_pk: encounter } = await getEncounterById({
-      id: encounter_id,
-    });
-    if (!encounter) {
-      return res.status(400).json({ error: 'encounter does not exist' });
+const attemptSolo: SoloEncounterAttempt = async (_req, res) => {
+  const { player, encounter, attempt: attemptData } = res.locals;
+  if (player && encounter) {
+    const attempt = await addSoloEncounterAttempt(attemptData);
+
+    if (
+      attempt.insert_solo_encounter_results_one &&
+      attempt.update_players_by_pk
+    ) {
+      return res.json({
+        encounter_id: encounter.id,
+        result: attempt.insert_solo_encounter_results_one.result,
+        result_id: attempt.insert_solo_encounter_results_one.id,
+        player_id: attempt.update_players_by_pk.id,
+        energy: attempt.update_players_by_pk.energy,
+        xp: attempt.update_players_by_pk.xp,
+      });
     }
-    const ownsAllRats = await checkRatOwners(rat_ids, player.id);
-    if (!ownsAllRats) {
-      return res
-        .status(400)
-        .json({ error: 'user does not own all submitted rats' });
-    }
-    if (encounter.energy_cost >= player.energy) {
-      return res
-        .status(400)
-        .json({ error: 'user does not have enough energy' });
-    }
-    if (encounter.max_rats < rat_ids.length) {
-      return res.status(400).json({ error: 'too many rats' });
-    }
-    if (!encounter.active) {
-      return res.status(400).json({ error: 'encounter is not active' });
-    }
-
-    const ratMeta = await getRatMeta(rat_ids);
-
-    if (Object.keys(ratMeta).length < 1) {
-      return res.status(500).json({ error: 'could not get rat metadata' });
-    }
-
-    const rattributes = Object.entries(ratMeta).reduce(
-      (acc, [id, rat]) => ({
-        ...acc,
-        [id]: {
-          ...rat.attributes
-            .filter((a) =>
-              ['cuteness', 'cunning', 'rattitude'].includes(
-                a.trait_type?.toLowerCase() ?? '',
-              ),
-            )
-            .reduce(
-              (acc, curr) => ({
-                ...acc,
-                [curr.trait_type?.toLowerCase() ?? '']: curr.value,
-              }),
-              {} as { cunning: number; cuteness: number; rattitude: number },
-            ),
-          ratType:
-            rat.attributes
-              .find((a) => a.trait_type?.toLowerCase() === 'type')
-              ?.value.toString()
-              .toUpperCase()
-              .split(' ')[0] ?? '',
-        },
-      }),
-      {} as Record<
-        string,
-        {
-          cunning: number;
-          cuteness: number;
-          rattitude: number;
-          ratType: string;
-        }
-      >,
-    );
-
-    const weaknesses = encounter.encounter_weaknesses.map(
-      (item) => item.weakness,
-    );
-    const resistances = encounter.encounter_resistances.map(
-      (item) => item.resistance,
-    );
-
-    const modifier =
-      weaknesses.reduce(
-        (acc, curr) =>
-          acc +
-          Object.entries(rattributes).reduce(
-            (a, c) => a + (c[curr.toLowerCase() as keyof typeof c] as number),
-            0,
-          ),
-        0,
-      ) -
-      resistances.reduce(
-        (acc, curr) =>
-          acc +
-          Object.entries(rattributes).reduce(
-            (a, c) => a + (c[curr.toLowerCase() as keyof typeof c] as number),
-            0,
-          ),
-        0,
-      );
-
-    const min = rat_ids.length + modifier;
-    const max = rat_ids.length * 6 + modifier;
-    const rand = crypto.randomInt(min, max + 1);
-    const result = rand >= encounter.power;
-    const newEnergy = player.energy - encounter.energy_cost;
-
-    const attempt = await addSoloEncounterAttempt({
-      encounter_id,
-      player_id: player.id,
-      result,
-      newEnergy,
-    });
-
-    return res.json({ result });
-  } else return res.status(401).json({ error: 'Player does not exist' });
+  }
 };
 
-app.post('/solo-encounter-attempt', getPlayer, attempt);
+const raidContribution: RaidContribution = async (_req, res) => {
+  const { player, raid, contribution: contributionData } = res.locals;
+  if (player && raid) {
+    const contribution = await addRaidContribution(contributionData);
+
+    if (
+      contribution.insert_raid_contributions_one &&
+      contribution.update_players_by_pk
+    ) {
+      return res.json({
+        raid_id: raid.id,
+        contribution: contribution.insert_raid_contributions_one.contribution,
+        faction: contribution.insert_raid_contributions_one.faction,
+        contribution_id: contribution.insert_raid_contributions_one.id,
+        player_id: contribution.update_players_by_pk.id,
+        energy: contribution.update_players_by_pk.energy,
+        xp: contribution.update_players_by_pk.xp,
+      });
+    }
+  }
+};
+
+app.post(
+  '/solo-encounter-attempt',
+  getPlayer,
+  getEncounter,
+  checkTokens,
+  loadTokens,
+  verifyEncounterMiddleware,
+  calculateAttempt,
+  attemptSolo,
+);
+
+app.post(
+  '/add-raid-contribution',
+  getPlayer,
+  getRaid,
+  checkTokens,
+  loadTokens,
+  verifyRaidMiddleware,
+  calculateContribution,
+  raidContribution,
+);
