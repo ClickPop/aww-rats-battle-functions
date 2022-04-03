@@ -13,13 +13,12 @@
     "target": "es2018",
     "esModuleInterop": true,
     "baseUrl": ".",
-    "rootDir": ".",
     "resolveJsonModule": true,
-    "noEmit": true,
     "paths": {
       "src/*": ["src/*"]
-    }
+    },
+    "outDir": "functions"
   },
-  "include": ["./src/**/*.ts", "./test/**/*.ts"],
+  "include": ["./src/**/*.ts"],
   "exclude": ["node_modules"]
 }

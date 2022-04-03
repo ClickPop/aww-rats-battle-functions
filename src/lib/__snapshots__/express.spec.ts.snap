@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/ should error if given incorrect api key 1`] = `
+Object {
+  "error": "invalid api key on request",
+}
+`;
+
+exports[`/ should error if no api key is supplied 1`] = `
+Object {
+  "error": "invalid api key on request",
+}
+`;
+
+exports[`/ should return available routes with correct api key 1`] = `
+Array [
+  Object {
+    "methods": Array [
+      "post",
+    ],
+    "path": "/auth/login",
+  },
+  Object {
+    "methods": Array [
+      "get",
+    ],
+    "path": "/auth",
+  },
+  Object {
+    "methods": Array [
+      "post",
+    ],
+    "path": "/auth-check",
+  },
+  Object {
+    "methods": Array [
+      "post",
+    ],
+    "path": "/caching/clear",
+  },
+  Object {
+    "methods": Array [
+      "post",
+    ],
+    "path": "/solo-encounter-attempt",
+  },
+  Object {
+    "methods": Array [
+      "post",
+    ],
+    "path": "/add-raid-contribution",
+  },
+  Object {
+    "methods": Array [
+      "post",
+    ],
+    "path": "/cron/reset-energy",
+  },
+  Object {
+    "methods": Array [
+      "post",
+    ],
+    "path": "/cron/handle-raid-trigger",
+  },
+  Object {
+    "methods": Array [
+      "post",
+    ],
+    "path": "/cron/handle-raid-end",
+  },
+]
+`;

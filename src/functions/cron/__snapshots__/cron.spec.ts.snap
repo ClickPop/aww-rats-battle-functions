@@ -1,0 +1,1075 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/cron /handle-raid-end should error if given incorrect api key 1`] = `
+Object {
+  "error": "invalid api key on request",
+}
+`;
+
+exports[`/cron /handle-raid-end should error if missing raid_id in request body 1`] = `
+Object {
+  "error": "missing raid_id",
+}
+`;
+
+exports[`/cron /handle-raid-end should error if no api key is supplied 1`] = `
+Object {
+  "error": "invalid api key on request",
+}
+`;
+
+exports[`/cron /handle-raid-end should error if the raid is not found 1`] = `
+Object {
+  "error": "encounter with id 71 does not exist",
+}
+`;
+
+exports[`/cron /handle-raid-end should error if the raid is not found 2`] = `
+Array [
+  Array [
+    Object {
+      "raid_id": 71,
+    },
+  ],
+]
+`;
+
+exports[`/cron /handle-raid-end should error if the raid is not found 3`] = `
+Array [
+  Object {
+    "raids_by_pk": null,
+  },
+]
+`;
+
+exports[`/cron /handle-raid-end should error with an incorrect encounter type 1`] = `
+Object {
+  "error": "encounter is not a raid type",
+}
+`;
+
+exports[`/cron /handle-raid-end should error with an incorrect encounter type 2`] = `
+Array [
+  Array [
+    Object {
+      "raid_id": 68,
+    },
+  ],
+]
+`;
+
+exports[`/cron /handle-raid-end should error with an incorrect encounter type 3`] = `
+Array [
+  Object {
+    "raids_by_pk": Object {
+      "encounter": Object {
+        "encounter_type": "solo",
+        "power": 0,
+      },
+      "lab": Array [],
+      "lab_sum": Object {
+        "aggregate": Object {
+          "sum": Object {
+            "contribution": 0,
+          },
+        },
+      },
+      "pack": Array [],
+      "pack_sum": Object {
+        "aggregate": Object {
+          "sum": Object {
+            "contribution": 0,
+          },
+        },
+      },
+      "pet": Array [],
+      "pet_sum": Object {
+        "aggregate": Object {
+          "sum": Object {
+            "contribution": 0,
+          },
+        },
+      },
+      "reward": Object {
+        "tokens": 69,
+      },
+      "street": Array [],
+      "street_sum": Object {
+        "aggregate": Object {
+          "sum": Object {
+            "contribution": 0,
+          },
+        },
+      },
+      "total": Array [],
+      "total_sum": Object {
+        "aggregate": Object {
+          "sum": Object {
+            "contribution": 0,
+          },
+        },
+      },
+    },
+  },
+]
+`;
+
+exports[`/cron /handle-raid-end should handle a community raid end 1`] = `
+Object {
+  "insert_closet_tokens": Object {
+    "affected_rows": 0,
+    "returning": Array [],
+  },
+  "update_players": Object {
+    "affected_rows": 8,
+    "returning": Array [
+      Object {
+        "id": "player1",
+        "tokens": 69,
+      },
+      Object {
+        "id": "player2",
+        "tokens": 69,
+      },
+      Object {
+        "id": "player3",
+        "tokens": 69,
+      },
+      Object {
+        "id": "player4",
+        "tokens": 69,
+      },
+      Object {
+        "id": "player5",
+        "tokens": 69,
+      },
+      Object {
+        "id": "player6",
+        "tokens": 69,
+      },
+      Object {
+        "id": "player7",
+        "tokens": 69,
+      },
+      Object {
+        "id": "player8",
+        "tokens": 69,
+      },
+    ],
+  },
+}
+`;
+
+exports[`/cron /handle-raid-end should handle a community raid end 2`] = `
+Array [
+  Array [
+    Object {
+      "raid_id": 69,
+    },
+  ],
+]
+`;
+
+exports[`/cron /handle-raid-end should handle a community raid end 3`] = `
+Array [
+  Object {
+    "raids_by_pk": Object {
+      "encounter": Object {
+        "encounter_type": "community_raid",
+        "power": 100,
+      },
+      "lab": Array [],
+      "lab_sum": Object {
+        "aggregate": Object {
+          "sum": Object {
+            "contribution": 0,
+          },
+        },
+      },
+      "pack": Array [],
+      "pack_sum": Object {
+        "aggregate": Object {
+          "sum": Object {
+            "contribution": 0,
+          },
+        },
+      },
+      "pet": Array [],
+      "pet_sum": Object {
+        "aggregate": Object {
+          "sum": Object {
+            "contribution": 0,
+          },
+        },
+      },
+      "reward": Object {
+        "tokens": 69,
+      },
+      "street": Array [],
+      "street_sum": Object {
+        "aggregate": Object {
+          "sum": Object {
+            "contribution": 0,
+          },
+        },
+      },
+      "total": Array [
+        Object {
+          "contribution": 10,
+          "contribution_timestamp": "fake-timestamp",
+          "player_id": "player1",
+        },
+        Object {
+          "contribution": 7,
+          "contribution_timestamp": "fake-timestamp",
+          "player_id": "player2",
+        },
+        Object {
+          "contribution": 18,
+          "contribution_timestamp": "fake-timestamp",
+          "player_id": "player3",
+        },
+        Object {
+          "contribution": 5,
+          "contribution_timestamp": "fake-timestamp",
+          "player_id": "player4",
+        },
+        Object {
+          "contribution": 23,
+          "contribution_timestamp": "fake-timestamp",
+          "player_id": "player5",
+        },
+        Object {
+          "contribution": 20,
+          "contribution_timestamp": "fake-timestamp",
+          "player_id": "player6",
+        },
+        Object {
+          "contribution": 12,
+          "contribution_timestamp": "fake-timestamp",
+          "player_id": "player7",
+        },
+        Object {
+          "contribution": 5,
+          "contribution_timestamp": "fake-timestamp",
+          "player_id": "player8",
+        },
+      ],
+      "total_sum": Object {
+        "aggregate": Object {
+          "sum": Object {
+            "contribution": 100,
+          },
+        },
+      },
+    },
+  },
+]
+`;
+
+exports[`/cron /handle-raid-end should handle a community raid end 4`] = `
+Array [
+  Array [
+    Object {
+      "closetItems": Array [],
+      "payout": 69,
+      "players": Array [
+        "player1",
+        "player2",
+        "player3",
+        "player4",
+        "player5",
+        "player6",
+        "player7",
+        "player8",
+      ],
+    },
+  ],
+]
+`;
+
+exports[`/cron /handle-raid-end should handle a community raid end 5`] = `
+Array [
+  Object {
+    "insert_closet_tokens": Object {
+      "affected_rows": 0,
+      "returning": Array [],
+    },
+    "update_players": Object {
+      "affected_rows": 8,
+      "returning": Array [
+        Object {
+          "id": "player1",
+          "tokens": 69,
+        },
+        Object {
+          "id": "player2",
+          "tokens": 69,
+        },
+        Object {
+          "id": "player3",
+          "tokens": 69,
+        },
+        Object {
+          "id": "player4",
+          "tokens": 69,
+        },
+        Object {
+          "id": "player5",
+          "tokens": 69,
+        },
+        Object {
+          "id": "player6",
+          "tokens": 69,
+        },
+        Object {
+          "id": "player7",
+          "tokens": 69,
+        },
+        Object {
+          "id": "player8",
+          "tokens": 69,
+        },
+      ],
+    },
+  },
+]
+`;
+
+exports[`/cron /handle-raid-end should handle a faction raid end 1`] = `
+Object {
+  "insert_closet_tokens": Object {
+    "affected_rows": 0,
+    "returning": Array [],
+  },
+  "update_players": Object {
+    "affected_rows": 6,
+    "returning": Array [
+      Object {
+        "id": "player1",
+        "tokens": 69,
+      },
+      Object {
+        "id": "player2",
+        "tokens": 69,
+      },
+      Object {
+        "id": "player3",
+        "tokens": 69,
+      },
+      Object {
+        "id": "player4",
+        "tokens": 69,
+      },
+      Object {
+        "id": "player5",
+        "tokens": 69,
+      },
+      Object {
+        "id": "player6",
+        "tokens": 69,
+      },
+    ],
+  },
+}
+`;
+
+exports[`/cron /handle-raid-end should handle a faction raid end 2`] = `
+Array [
+  Array [
+    Object {
+      "raid_id": 70,
+    },
+  ],
+]
+`;
+
+exports[`/cron /handle-raid-end should handle a faction raid end 3`] = `
+Array [
+  Object {
+    "raids_by_pk": Object {
+      "encounter": Object {
+        "encounter_type": "faction_raid",
+        "power": 50,
+      },
+      "lab": Array [
+        Object {
+          "contribution": 10,
+          "contribution_timestamp": "fake-timestamp",
+          "player_id": "player1",
+        },
+        Object {
+          "contribution": 7,
+          "contribution_timestamp": "fake-timestamp",
+          "player_id": "player2",
+        },
+        Object {
+          "contribution": 18,
+          "contribution_timestamp": "fake-timestamp",
+          "player_id": "player3",
+        },
+        Object {
+          "contribution": 5,
+          "contribution_timestamp": "fake-timestamp",
+          "player_id": "player4",
+        },
+      ],
+      "lab_sum": Object {
+        "aggregate": Object {
+          "sum": Object {
+            "contribution": 40,
+          },
+        },
+      },
+      "pack": Array [
+        Object {
+          "contribution": 11,
+          "contribution_timestamp": "fake-timestamp",
+          "player_id": "player1",
+        },
+        Object {
+          "contribution": 8,
+          "contribution_timestamp": "fake-timestamp",
+          "player_id": "player2",
+        },
+        Object {
+          "contribution": 13,
+          "contribution_timestamp": "fake-timestamp",
+          "player_id": "player3",
+        },
+      ],
+      "pack_sum": Object {
+        "aggregate": Object {
+          "sum": Object {
+            "contribution": 32,
+          },
+        },
+      },
+      "pet": Array [
+        Object {
+          "contribution": 11,
+          "contribution_timestamp": "fake-timestamp",
+          "player_id": "player1",
+        },
+        Object {
+          "contribution": 8,
+          "contribution_timestamp": "fake-timestamp",
+          "player_id": "player2",
+        },
+        Object {
+          "contribution": 13,
+          "contribution_timestamp": "fake-timestamp",
+          "player_id": "player3",
+        },
+        Object {
+          "contribution": 12,
+          "contribution_timestamp": "fake-timestamp",
+          "player_id": "player4",
+        },
+        Object {
+          "contribution": 9,
+          "contribution_timestamp": "fake-timestamp",
+          "player_id": "player5",
+        },
+        Object {
+          "contribution": 15,
+          "contribution_timestamp": "fake-timestamp",
+          "player_id": "player6",
+        },
+      ],
+      "pet_sum": Object {
+        "aggregate": Object {
+          "sum": Object {
+            "contribution": 69,
+          },
+        },
+      },
+      "reward": Object {
+        "tokens": 69,
+      },
+      "street": Array [
+        Object {
+          "contribution": 10,
+          "contribution_timestamp": "fake-timestamp",
+          "player_id": "player1",
+        },
+        Object {
+          "contribution": 7,
+          "contribution_timestamp": "fake-timestamp",
+          "player_id": "player2",
+        },
+        Object {
+          "contribution": 18,
+          "contribution_timestamp": "fake-timestamp",
+          "player_id": "player3",
+        },
+        Object {
+          "contribution": 5,
+          "contribution_timestamp": "fake-timestamp",
+          "player_id": "player4",
+        },
+        Object {
+          "contribution": 3,
+          "contribution_timestamp": "fake-timestamp",
+          "player_id": "player5",
+        },
+        Object {
+          "contribution": 8,
+          "contribution_timestamp": "fake-timestamp",
+          "player_id": "player6",
+        },
+      ],
+      "street_sum": Object {
+        "aggregate": Object {
+          "sum": Object {
+            "contribution": 51,
+          },
+        },
+      },
+      "total": Array [],
+      "total_sum": Object {
+        "aggregate": Object {
+          "sum": Object {
+            "contribution": 0,
+          },
+        },
+      },
+    },
+  },
+]
+`;
+
+exports[`/cron /handle-raid-end should handle a faction raid end 4`] = `
+Array [
+  Array [
+    Object {
+      "closetItems": Array [],
+      "payout": 69,
+      "players": Array [
+        "player1",
+        "player2",
+        "player3",
+        "player4",
+        "player5",
+        "player6",
+      ],
+    },
+  ],
+]
+`;
+
+exports[`/cron /handle-raid-end should handle a faction raid end 5`] = `
+Array [
+  Object {
+    "insert_closet_tokens": Object {
+      "affected_rows": 0,
+      "returning": Array [],
+    },
+    "update_players": Object {
+      "affected_rows": 6,
+      "returning": Array [
+        Object {
+          "id": "player1",
+          "tokens": 69,
+        },
+        Object {
+          "id": "player2",
+          "tokens": 69,
+        },
+        Object {
+          "id": "player3",
+          "tokens": 69,
+        },
+        Object {
+          "id": "player4",
+          "tokens": 69,
+        },
+        Object {
+          "id": "player5",
+          "tokens": 69,
+        },
+        Object {
+          "id": "player6",
+          "tokens": 69,
+        },
+      ],
+    },
+  },
+]
+`;
+
+exports[`/cron /handle-raid-trigger should error if given incorrect api key 1`] = `
+Object {
+  "error": "invalid api key on request",
+}
+`;
+
+exports[`/cron /handle-raid-trigger should error if no api key is supplied 1`] = `
+Object {
+  "error": "invalid api key on request",
+}
+`;
+
+exports[`/cron /handle-raid-trigger should handle DELETE method with existing end_event_id 1`] = `
+Object {
+  "event_id": "event-id",
+  "message": "success",
+}
+`;
+
+exports[`/cron /handle-raid-trigger should handle DELETE method with existing end_event_id 2`] = `
+Array [
+  Array [
+    "/",
+    Object {
+      "args": Object {
+        "event_id": "event-id",
+        "type": "one_off",
+      },
+      "type": "delete_scheduled_event",
+    },
+  ],
+]
+`;
+
+exports[`/cron /handle-raid-trigger should handle DELETE method with existing end_event_id 3`] = `
+Array [
+  Object {
+    "config": Object {},
+    "data": Object {
+      "message": "success",
+    },
+    "headers": Object {},
+    "status": 200,
+    "statusText": "success",
+  },
+]
+`;
+
+exports[`/cron /handle-raid-trigger should handle DELETE method with existing end_event_id 4`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "end_event_id": null,
+      },
+      "raid_id": 69,
+    },
+  ],
+]
+`;
+
+exports[`/cron /handle-raid-trigger should handle DELETE method with existing end_event_id 5`] = `
+Array [
+  Object {
+    "update_raids_by_pk": Object {
+      "active": true,
+      "end_event_id": null,
+      "end_timestamp": "2069-04-22T04:20:00+0420",
+      "id": 69,
+      "result": null,
+      "start_timestamp": "2069-04-20T04:20:00+0420",
+      "winning_faction": null,
+    },
+  },
+]
+`;
+
+exports[`/cron /handle-raid-trigger should handle INSERT method 1`] = `
+Object {
+  "event_id": "good-event-id",
+  "message": "success",
+}
+`;
+
+exports[`/cron /handle-raid-trigger should handle INSERT method 2`] = `
+Array [
+  "/",
+  Object {
+    "args": Object {
+      "headers": Array [
+        Object {
+          "name": "authorization",
+          "value_from_env": "WEBHOOK_API_KEY",
+        },
+      ],
+      "payload": Object {
+        "raid_id": 69,
+      },
+      "schedule_at": "good-timestamp",
+      "webhook": "http://host.docker.internal:5002/cron/handle-raid-end",
+    },
+    "type": "create_scheduled_event",
+  },
+]
+`;
+
+exports[`/cron /handle-raid-trigger should handle INSERT method 3`] = `
+Object {
+  "config": Object {},
+  "data": Object {
+    "event_id": "good-event-id",
+    "message": "success",
+  },
+  "headers": Object {},
+  "status": 200,
+  "statusText": "success",
+}
+`;
+
+exports[`/cron /handle-raid-trigger should handle INSERT method 4`] = `
+Array [
+  Object {
+    "input": Object {
+      "end_event_id": "good-event-id",
+    },
+    "raid_id": 69,
+  },
+]
+`;
+
+exports[`/cron /handle-raid-trigger should handle INSERT method 5`] = `
+Object {
+  "update_raids_by_pk": Object {
+    "active": true,
+    "end_event_id": "good-event-id",
+    "end_timestamp": "2069-04-22T04:20:00+0420",
+    "id": 69,
+    "result": null,
+    "start_timestamp": "2069-04-20T04:20:00+0420",
+    "winning_faction": null,
+  },
+}
+`;
+
+exports[`/cron /handle-raid-trigger should handle UPDATE method with existing end_event_id but is now inactive 1`] = `
+Object {
+  "event_id": "event-id",
+  "message": "success",
+}
+`;
+
+exports[`/cron /handle-raid-trigger should handle UPDATE method with existing end_event_id but is now inactive 2`] = `
+Array [
+  Array [
+    "/",
+    Object {
+      "args": Object {
+        "event_id": "event-id",
+        "type": "one_off",
+      },
+      "type": "delete_scheduled_event",
+    },
+  ],
+]
+`;
+
+exports[`/cron /handle-raid-trigger should handle UPDATE method with existing end_event_id but is now inactive 3`] = `
+Array [
+  Object {
+    "config": Object {},
+    "data": Object {
+      "message": "success",
+    },
+    "headers": Object {},
+    "status": 200,
+    "statusText": "success",
+  },
+]
+`;
+
+exports[`/cron /handle-raid-trigger should handle UPDATE method with existing end_event_id but is now inactive 4`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "end_event_id": null,
+      },
+      "raid_id": 69,
+    },
+  ],
+]
+`;
+
+exports[`/cron /handle-raid-trigger should handle UPDATE method with existing end_event_id but is now inactive 5`] = `
+Array [
+  Object {
+    "update_raids_by_pk": Object {
+      "active": true,
+      "end_event_id": null,
+      "end_timestamp": "2069-04-22T04:20:00+0420",
+      "id": 69,
+      "result": null,
+      "start_timestamp": "2069-04-20T04:20:00+0420",
+      "winning_faction": null,
+    },
+  },
+]
+`;
+
+exports[`/cron /handle-raid-trigger should handle UPDATE method with existing end_event_id but new timestamp 1`] = `
+Object {
+  "event_id": "event-id",
+  "message": "success",
+}
+`;
+
+exports[`/cron /handle-raid-trigger should handle UPDATE method with existing end_event_id but new timestamp 2`] = `
+Array [
+  Array [
+    "/",
+    Object {
+      "args": Object {
+        "headers": Array [
+          Object {
+            "name": "authorization",
+            "value_from_env": "WEBHOOK_API_KEY",
+          },
+        ],
+        "payload": Object {
+          "raid_id": 69,
+        },
+        "schedule_at": "good-timestamp",
+        "webhook": "http://host.docker.internal:5002/cron/handle-raid-end",
+      },
+      "type": "create_scheduled_event",
+    },
+  ],
+  Array [
+    "/",
+    Object {
+      "args": Object {
+        "event_id": "event-id",
+        "type": "one_off",
+      },
+      "type": "delete_scheduled_event",
+    },
+  ],
+]
+`;
+
+exports[`/cron /handle-raid-trigger should handle UPDATE method with existing end_event_id but new timestamp 3`] = `
+Array [
+  Object {
+    "config": Object {},
+    "data": Object {
+      "event_id": "good-event-id",
+      "message": "success",
+    },
+    "headers": Object {},
+    "status": 200,
+    "statusText": "success",
+  },
+  Object {
+    "config": Object {},
+    "data": Object {
+      "message": "success",
+    },
+    "headers": Object {},
+    "status": 200,
+    "statusText": "success",
+  },
+]
+`;
+
+exports[`/cron /handle-raid-trigger should handle UPDATE method with existing end_event_id but new timestamp 4`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "end_event_id": "good-event-id",
+      },
+      "raid_id": 69,
+    },
+  ],
+  Array [
+    Object {
+      "input": Object {
+        "end_event_id": null,
+      },
+      "raid_id": 69,
+    },
+  ],
+]
+`;
+
+exports[`/cron /handle-raid-trigger should handle UPDATE method with existing end_event_id but new timestamp 5`] = `
+Array [
+  Object {
+    "update_raids_by_pk": Object {
+      "active": true,
+      "end_event_id": "good-event-id",
+      "end_timestamp": "2069-04-22T04:20:00+0420",
+      "id": 69,
+      "result": null,
+      "start_timestamp": "2069-04-20T04:20:00+0420",
+      "winning_faction": null,
+    },
+  },
+  Object {
+    "update_raids_by_pk": Object {
+      "active": true,
+      "end_event_id": null,
+      "end_timestamp": "2069-04-22T04:20:00+0420",
+      "id": 69,
+      "result": null,
+      "start_timestamp": "2069-04-20T04:20:00+0420",
+      "winning_faction": null,
+    },
+  },
+]
+`;
+
+exports[`/cron /handle-raid-trigger should handle UPDATE method without existing end_event_id but is now active 1`] = `
+Object {
+  "event_id": "good-event-id",
+  "message": "success",
+}
+`;
+
+exports[`/cron /handle-raid-trigger should handle UPDATE method without existing end_event_id but is now active 2`] = `
+Array [
+  "/",
+  Object {
+    "args": Object {
+      "headers": Array [
+        Object {
+          "name": "authorization",
+          "value_from_env": "WEBHOOK_API_KEY",
+        },
+      ],
+      "payload": Object {
+        "raid_id": 69,
+      },
+      "schedule_at": "good-timestamp",
+      "webhook": "http://host.docker.internal:5002/cron/handle-raid-end",
+    },
+    "type": "create_scheduled_event",
+  },
+]
+`;
+
+exports[`/cron /handle-raid-trigger should handle UPDATE method without existing end_event_id but is now active 3`] = `
+Object {
+  "config": Object {},
+  "data": Object {
+    "event_id": "good-event-id",
+    "message": "success",
+  },
+  "headers": Object {},
+  "status": 200,
+  "statusText": "success",
+}
+`;
+
+exports[`/cron /handle-raid-trigger should handle UPDATE method without existing end_event_id but is now active 4`] = `
+Array [
+  Object {
+    "input": Object {
+      "end_event_id": "good-event-id",
+    },
+    "raid_id": 69,
+  },
+]
+`;
+
+exports[`/cron /handle-raid-trigger should handle UPDATE method without existing end_event_id but is now active 5`] = `
+Object {
+  "update_raids_by_pk": Object {
+    "active": true,
+    "end_event_id": "good-event-id",
+    "end_timestamp": "2069-04-22T04:20:00+0420",
+    "id": 69,
+    "result": null,
+    "start_timestamp": "2069-04-20T04:20:00+0420",
+    "winning_faction": null,
+  },
+}
+`;
+
+exports[`/cron /handle-raid-trigger should handle UPDATE method without existing end_event_id but with a new timestamp 1`] = `
+Object {
+  "event_id": "event_id",
+  "message": "success",
+}
+`;
+
+exports[`/cron /handle-raid-trigger should handle UPDATE method without existing end_event_id but with a new timestamp 2`] = `
+Array [
+  "/",
+  Object {
+    "args": Object {
+      "headers": Array [
+        Object {
+          "name": "authorization",
+          "value_from_env": "WEBHOOK_API_KEY",
+        },
+      ],
+      "payload": Object {
+        "raid_id": 69,
+      },
+      "schedule_at": "good-timestamp",
+      "webhook": "http://host.docker.internal:5002/cron/handle-raid-end",
+    },
+    "type": "create_scheduled_event",
+  },
+]
+`;
+
+exports[`/cron /handle-raid-trigger should handle UPDATE method without existing end_event_id but with a new timestamp 3`] = `
+Object {
+  "config": Object {},
+  "data": Object {
+    "event_id": "good-event-id",
+    "message": "success",
+  },
+  "headers": Object {},
+  "status": 200,
+  "statusText": "success",
+}
+`;
+
+exports[`/cron /handle-raid-trigger should handle UPDATE method without existing end_event_id but with a new timestamp 4`] = `
+Array [
+  Object {
+    "input": Object {
+      "end_event_id": "good-event-id",
+    },
+    "raid_id": 69,
+  },
+]
+`;
+
+exports[`/cron /handle-raid-trigger should handle UPDATE method without existing end_event_id but with a new timestamp 5`] = `
+Object {
+  "update_raids_by_pk": Object {
+    "active": true,
+    "end_event_id": "good-event-id",
+    "end_timestamp": "2069-04-22T04:20:00+0420",
+    "id": 69,
+    "result": null,
+    "start_timestamp": "2069-04-20T04:20:00+0420",
+    "winning_faction": null,
+  },
+}
+`;
+
+exports[`/cron /reset-energy should error if given incorrect api key 1`] = `
+Object {
+  "error": "invalid api key on request",
+}
+`;
+
+exports[`/cron /reset-energy should error if no api key is supplied 1`] = `
+Object {
+  "error": "invalid api key on request",
+}
+`;
+
+exports[`/cron /reset-energy should return cleared token count 1`] = `
+Array [
+  Object {
+    "energy": 69,
+  },
+]
+`;

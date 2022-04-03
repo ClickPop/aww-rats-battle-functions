@@ -1,7 +1,7 @@
 import { SoloEncounterAttempt } from 'src/types';
 import crypto from 'crypto';
 
-export const calculateAttempt: SoloEncounterAttempt = (req, res, next) => {
+export const calculateAttempt: SoloEncounterAttempt = (_req, res, next) => {
   const { rats, encounter, player } = res.locals;
   if (rats && encounter && player) {
     const rattributes = rats.reduce(

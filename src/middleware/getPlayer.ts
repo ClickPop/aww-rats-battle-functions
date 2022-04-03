@@ -7,6 +7,9 @@ const { getPlayerById } = sdk;
 export const getPlayer: PlayerMiddleware = async (req, res, next) => {
   try {
     const wallet = req.body.session_variables['x-hasura-user-id'];
+    if (!wallet) {
+      return errorHandler({ msg: 'missing wallet', code: 401 }, res);
+    }
     const data = await getPlayerById({
       id: wallet,
     });

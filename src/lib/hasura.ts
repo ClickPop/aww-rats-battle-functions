@@ -6,9 +6,9 @@ import {
 } from 'src/config/env';
 import { sdk } from 'src/lib/graphql';
 import { CreateScheduledEventBody, DeleteScheduledEventBody } from 'src/types';
-const { UpdateRaid } = sdk;
+const { updateRaid } = sdk;
 
-const hasura = axios.create({
+export const hasura = axios.create({
   baseURL: `${HASURA_BASE_URL}/v1/metadata`,
   headers: { 'x-hasura-admin-secret': HASURA_ADMIN_SECRET },
 });
@@ -41,7 +41,10 @@ export const hasuraMetadataApi = {
     });
 
     if (data.message === 'success' && data.event_id) {
-      await UpdateRaid({ raid_id, input: { end_event_id: data.event_id } });
+      await updateRaid({
+        raid_id,
+        input: { end_event_id: data.event_id },
+      });
     }
 
     return data;
@@ -57,7 +60,7 @@ export const hasuraMetadataApi = {
     });
 
     if (data.message === 'success') {
-      await UpdateRaid({ raid_id, input: { end_event_id: null } });
+      await updateRaid({ raid_id, input: { end_event_id: null } });
     }
 
     return { ...data, event_id };
