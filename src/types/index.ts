@@ -11,9 +11,8 @@ import {
   RaidContributionResult,
   GetRaidbyIdQuery,
   AddRaidContributionMutationVariables,
-} from 'src/schema/generated';
-export * from 'src/schema/generated';
-import { HASURA_BASE_URL } from 'src/config/env';
+} from 'src/schema/schema.g';
+export * from 'src/schema/schema.g';
 
 /**
  * Opensea
@@ -45,8 +44,8 @@ export type OpenSeaAttribute = {
  * */
 
 type HasuraSessionVariables = {
-  'x-hasura-user-id': string;
-  'x-hasura-role': 'user' | 'anonymous';
+  'x-hasura-user-id'?: string;
+  'x-hasura-role': Roles_Enum;
 };
 
 // These are the basic shapes of the request body coming in from Hasura into an action or trigger handler
@@ -145,14 +144,14 @@ type HeaderFromEnvObject = {
 
 type HeaderArray = [HeaderObject | HeaderFromEnvObject];
 
-export interface MetadataApiBody {
+export interface HasuraMetadataApiBody {
   type: string;
   version?: number;
   resource_version?: number;
   args: Record<string, unknown>;
 }
 
-export interface CreateScheduledEventBody extends MetadataApiBody {
+export interface CreateScheduledEventBody extends HasuraMetadataApiBody {
   type: 'create_scheduled_event';
   args: {
     webhook: string;
@@ -164,7 +163,7 @@ export interface CreateScheduledEventBody extends MetadataApiBody {
   };
 }
 
-export interface DeleteScheduledEventBody extends MetadataApiBody {
+export interface DeleteScheduledEventBody extends HasuraMetadataApiBody {
   type: 'delete_scheduled_event';
   args: {
     type: 'one_off' | 'cron';
@@ -173,12 +172,7 @@ export interface DeleteScheduledEventBody extends MetadataApiBody {
 }
 
 //Auth Hook Response handler
-export type HasuraAuthHookReponseBody =
-  | {
-      'X-Hasura-User-Id'?: string;
-      'X-Hasura-Role': Roles_Enum;
-    }
-  | { error: any };
+export type HasuraAuthHookReponseBody = HasuraSessionVariables | { error: any };
 
 // Auth hook handler
 export type HasuraAuthHook = RequestHandler<
@@ -196,7 +190,7 @@ export type HasuraLoginHandler = HasuraActionHandler<
 >;
 
 // Function Encounter types
-interface EncounterAttempBody extends HasuraActionReqBody {
+interface EncounterAttemptBody extends HasuraActionReqBody {
   input: { encounter_id: number; rat_ids: string[] };
 }
 
@@ -232,7 +226,7 @@ export type PlayerMiddleware = HasuraActionHandler<
 
 export type EncounterMiddleware = HasuraActionHandler<
   {},
-  EncounterAttempBody,
+  EncounterAttemptBody,
   qs.ParsedQs,
   PlayerLocals & EncounterLocals
 >;

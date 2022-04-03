@@ -1,6 +1,6 @@
 node_modules/
 **/*.env
-src/schema/generated.ts
+src/schema/schema.g.ts
 src/schema/graphql.schema.json
 functions/
 !src/functions

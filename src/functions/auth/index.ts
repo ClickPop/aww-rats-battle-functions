@@ -10,7 +10,7 @@ import {
 } from 'src/types';
 import { sdk } from 'src/lib/graphql';
 
-const { getUserRole, UpsertPlayer } = sdk;
+const { getUserRole, upsertPlayer } = sdk;
 
 const authHook: HasuraAuthHook = async (_, res) => {
   try {
@@ -22,8 +22,8 @@ const authHook: HasuraAuthHook = async (_, res) => {
       role = userRole ? userRole : Roles_Enum.User;
     }
     const result: HasuraAuthHookReponseBody = {
-      'X-Hasura-User-Id': wallet,
-      'X-Hasura-Role': role,
+      'x-hasura-user-id': wallet,
+      'x-hasura-role': role,
     };
     return res.json(result);
   } catch (err) {
@@ -56,7 +56,7 @@ const login: HasuraLoginHandler = async (req, res) => {
         httpOnly: true,
         signed: true,
       });
-      const player = await UpsertPlayer({ id: wallet });
+      const player = await upsertPlayer({ id: wallet });
       return res.send(player.insert_players_one);
     }
     return res.status(401).send({ error: 'Invalid login' });

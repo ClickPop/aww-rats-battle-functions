@@ -13,7 +13,7 @@ import { checkApiKey } from 'src/middleware/checkApiKey';
 import { hasuraMetadataApi } from 'src/lib/hasura';
 import { errorHandler } from 'src/errors/errorHandler';
 
-const { resetEnergy, GetRaidContributions, handleRaidPayout } = sdk;
+const { resetEnergy, getRaidContributions, handleRaidPayout } = sdk;
 
 const resetEnergyEndpint: HasuraActionHandler<
   ResetEnergyMutation['reset_energy'] | { error: unknown }
@@ -28,60 +28,94 @@ const resetEnergyEndpint: HasuraActionHandler<
 };
 
 const handleRaidTrigger: HasuraTriggerHandler<
-  { message: string; event_id: string } | 'no change'
+  { message: string; event_id?: string } | 'no change'
 > = async (req, res) => {
   try {
     switch (req.body.event.op) {
       case 'INSERT':
         if (
+          // Checks that there is new data
           req.body.event.data.new &&
+          // Checks that the new id exists and is of type number
+          req.body.event.data.new.id &&
+          typeof req.body.event.data.new.id === 'number' &&
+          // Checks that the new data is active
           req.body.event.data.new.active &&
-          req.body.event.data.new.end_timestamp
+          // Checks that the new timestamp is a string
+          req.body.event.data.new.end_timestamp &&
+          typeof req.body.event.data.new.end_timestamp === 'string'
         ) {
-          const data = await hasuraMetadataApi.createScheduledEvent({
-            type: 'create_scheduled_event',
-            args: {
-              webhook: `{{ACTION_HANDLER}}/cron/handle-raid-end`,
-              schedule_at: req.body.event.data.new.end_timestamp as string,
-            },
-          });
+          const data = await hasuraMetadataApi.createRaidEndEvent(
+            req.body.event.data.new.id,
+            req.body.event.data.new.end_timestamp,
+          );
           return res.json(data);
         }
         return res.send('no change');
       case 'UPDATE':
-        if (req.body.event.data.new) {
+        // Checks that there is both new and old data
+        if (req.body.event.data.new && req.body.event.data.old) {
+          let data: { message: 'success'; event_id?: string } = {
+            message: 'success',
+          };
           if (
+            // Checks that the new id exists and is of type number
             req.body.event.data.new.id &&
             typeof req.body.event.data.new.id === 'number' &&
+            // Checks that the new data is active
             req.body.event.data.new.active &&
+            // Checks that the new timestamp is a string
             req.body.event.data.new.end_timestamp &&
-            typeof req.body.event.data.new.end_timestamp === 'string'
+            typeof req.body.event.data.new.end_timestamp === 'string' &&
+            // Checks that the old timestamp is a string
+            req.body.event.data.old.end_timestamp &&
+            typeof req.body.event.data.old.end_timestamp === 'string' &&
+            // Checks that the new timestamp is different than the old timestamp or the old state of active was false
+            (req.body.event.data.new.end_timestamp !==
+              req.body.event.data.old.end_timestamp ||
+              !req.body.event.data.old.active)
           ) {
-            const data = await hasuraMetadataApi.createRaidEndEvent(
+            data = await hasuraMetadataApi.createRaidEndEvent(
               req.body.event.data.new.id,
               req.body.event.data.new.end_timestamp,
             );
-            return res.json(data);
-          } else if (
-            !req.body.event.data.new.active &&
+          }
+
+          if (
+            // Checks that the new id exists and is of type number
             req.body.event.data.new.id &&
             typeof req.body.event.data.new.id === 'number' &&
+            // Checks that there is an end_event_id of type string
             req.body.event.data.new.end_event_id &&
-            typeof req.body.event.data.new.end_event_id === 'string'
+            typeof req.body.event.data.new.end_event_id === 'string' &&
+            // Checks if the event data is now inactive or the new timestamp is different than the old timestamp
+            (!req.body.event.data.new.active ||
+              // Checks that the new timestamp is a string
+              (req.body.event.data.new.end_timestamp &&
+                typeof req.body.event.data.new.end_timestamp === 'string' &&
+                // Checks that the old timestamp is a string
+                req.body.event.data.old.end_timestamp &&
+                typeof req.body.event.data.old.end_timestamp === 'string' &&
+                // Checks that the new timestamp is different than the old timestamp
+                req.body.event.data.new.end_timestamp !==
+                  req.body.event.data.old.end_timestamp))
           ) {
-            const data = await hasuraMetadataApi.deleteRaidEndEvent(
+            data = await hasuraMetadataApi.deleteRaidEndEvent(
               req.body.event.data.new.id,
               req.body.event.data.new.end_event_id,
             );
-            return res.json(data);
           }
+          return res.json(data);
         }
         return res.send('no change');
       case 'DELETE':
         if (
+          // Checks that there is old data
           req.body.event.data.old &&
+          // Checks that the old id is of type number
           req.body.event.data.old.id &&
           typeof req.body.event.data.old.id === 'number' &&
+          // Checks that the old end_event_id is of type string
           req.body.event.data.old.end_event_id &&
           typeof req.body.event.data.old.end_event_id === 'string'
         ) {
@@ -108,10 +142,33 @@ const handleRaidEnd: HasuraEventHandler<HandleRaidPayoutMutation> = async (
   res,
 ) => {
   const { payload } = req.body;
+
   if (payload?.raid_id && typeof payload.raid_id === 'number') {
-    const raidWithContributions = await GetRaidContributions({
+    const raidWithContributions = await getRaidContributions({
       raid_id: payload.raid_id,
     });
+
+    if (!raidWithContributions.raids_by_pk) {
+      return errorHandler(
+        {
+          code: 404,
+          msg: `encounter with id ${payload.raid_id} does not exist`,
+        },
+        res,
+      );
+    }
+
+    if (
+      ![
+        Encounter_Types_Enum.FactionRaid,
+        Encounter_Types_Enum.CommunityRaid,
+      ].includes(raidWithContributions.raids_by_pk.encounter.encounter_type)
+    ) {
+      return errorHandler(
+        { code: 400, msg: 'encounter is not a raid type' },
+        res,
+      );
+    }
 
     if (
       raidWithContributions.raids_by_pk?.encounter.encounter_type ===
@@ -148,7 +205,7 @@ const handleRaidEnd: HasuraEventHandler<HandleRaidPayoutMutation> = async (
         },
       ].sort((a, b) => a.contribution - b.contribution);
 
-      const largest = factionsByContribution.at(-1);
+      const largest = factionsByContribution[factionsByContribution.length - 1];
 
       if (
         (largest?.contribution ?? 0) >=
@@ -196,10 +253,6 @@ const handleRaidEnd: HasuraEventHandler<HandleRaidPayoutMutation> = async (
       });
       return res.json(payout);
     }
-    return errorHandler(
-      { code: 400, msg: 'encounter is not a raid type' },
-      res,
-    );
   }
   return errorHandler({ code: 400, msg: 'missing raid_id' }, res);
 };

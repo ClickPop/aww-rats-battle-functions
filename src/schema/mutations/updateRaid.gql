@@ -1,4 +1,4 @@
-mutation UpdateRaid($raid_id: Int!, $input: raids_set_input!) {
+mutation updateRaid($raid_id: Int!, $input: raids_set_input!) {
   update_raids_by_pk(pk_columns: { id: $raid_id }, _set: $input) {
     id
     active

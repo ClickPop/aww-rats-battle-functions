@@ -39,7 +39,7 @@ export const verifyEncounter = (
         return errorHandler(
           {
             code: 400,
-            msg: `Incorrect number of ${rat_type} rats sent. Expected: ${locked_slots} Recieved: ${ratsOfType}`,
+            msg: `incorrect number of ${rat_type} rats sent. Expected: ${locked_slots} Recieved: ${ratsOfType}`,
           },
           res,
         );

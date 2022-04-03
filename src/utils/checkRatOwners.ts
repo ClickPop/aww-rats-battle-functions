@@ -1,4 +1,4 @@
-import { rat } from 'src/lib/ethers';
+import { rat } from 'src/lib/ethersService';
 
 export const checkRatOwners = async (
   ratIds: string[],
@@ -7,9 +7,7 @@ export const checkRatOwners = async (
   for (const id of ratIds) {
     try {
       const owner = await rat.ownerOf(id);
-      if (owner !== address) {
-        return true;
-      }
+      return owner === address;
     } catch (err) {
       console.error(err);
       return false;

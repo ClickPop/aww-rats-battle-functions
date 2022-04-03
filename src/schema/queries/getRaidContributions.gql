@@ -1,4 +1,4 @@
-query GetRaidContributions($raid_id: Int!) {
+query getRaidContributions($raid_id: Int!) {
   raids_by_pk(id: $raid_id) {
     encounter {
       power

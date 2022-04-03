@@ -1,4 +1,4 @@
-query GetRatsByIds($ids: [bigint!]!) {
+query getRatsByIds($ids: [bigint!]!) {
   rats(where: { id: { _in: $ids } }) {
     id
     cunning

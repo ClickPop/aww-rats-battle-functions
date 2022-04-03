@@ -1,4 +1,4 @@
-mutation UpsertPlayer($id: String!) {
+mutation upsertPlayer($id: String!) {
   insert_players_one(
     object: { id: $id }
     on_conflict: { constraint: players_pkey, update_columns: [id] }

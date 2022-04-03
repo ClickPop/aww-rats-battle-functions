@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/caching/clear should error if given incorrect api key 1`] = `
+Object {
+  "error": "invalid api key on request",
+}
+`;
+
+exports[`/caching/clear should error if no api key is supplied 1`] = `
+Object {
+  "error": "invalid api key on request",
+}
+`;
+
+exports[`/caching/clear should return cleared token count 1`] = `
+Object {
+  "affected_rows": 666,
+}
+`;

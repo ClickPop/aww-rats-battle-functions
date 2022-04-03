@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/auth / should handle an incoming cookie and give back the users info 1`] = `
+Object {
+  "x-hasura-role": "admin",
+  "x-hasura-user-id": "admin",
+}
+`;
+
+exports[`/auth / should return an anonymous user 1`] = `
+Object {
+  "x-hasura-role": "anonymous",
+}
+`;
+
+exports[`/auth /login should handle logging in 1`] = `
+Object {
+  "created_at": "2069-04-20T04:20:00+0420",
+  "energy": 420,
+  "id": "admin",
+  "level": 69,
+  "max_energy": 666,
+  "updated_at": "2069-04-20T04:20:00+0420",
+  "xp": 9000,
+}
+`;
+
+exports[`/auth /login should reject logging in with an incorrect msg 1`] = `
+Object {
+  "error": "Invalid login",
+}
+`;
+
+exports[`/auth-check should handle checking with a valid wallet 1`] = `
+Object {
+  "id": "admin",
+  "role": "admin",
+}
+`;
+
+exports[`/auth-check should handle checking with anonymous 1`] = `
+Object {
+  "id": null,
+  "role": "anonymous",
+}
+`;

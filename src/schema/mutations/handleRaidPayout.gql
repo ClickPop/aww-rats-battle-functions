@@ -11,7 +11,10 @@ mutation handleRaidPayout(
     }
   }
 
-  insert_closet_tokens(objects: $closetItems) {
+  insert_closet_tokens(
+    objects: $closetItems
+    on_conflict: { constraint: closet_tokens_pkey, update_columns: amount }
+  ) {
     affected_rows
     returning {
       token_id
